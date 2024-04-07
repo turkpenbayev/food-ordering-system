@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Status</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Order Status</h1>
+    <div id="order-status">Order Status: {{order.get_status_display}}</div>
+    {{ order.uuid|json_script:"json-order_id" }}
+
+    <script>
+        const orderId = JSON.parse(document.getElementById('json-order_id').textContent);
+        // Define WebSocket URL
+        const wsURL = 'ws://'+ window.location.host+ '/ws/orders/'+ orderId+ '/';
+
+        // Create WebSocket connection
+        const socket = new WebSocket(wsURL);
+
+        // Event listener for WebSocket connection established
+        socket.onopen = function (event) {
+            console.log('WebSocket connection established.');
+        };
+
+        // Event listener for WebSocket messages received
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            const status = data.status;
+
+            // Update order status in the HTML
+            document.getElementById('order-status').innerHTML = `Order Status: ${status}`;
+        };
+
+        // Event listener for WebSocket connection closed
+        socket.onclose = function (event) {
+            console.log('WebSocket connection closed.');
+        };
+    </script>
+</body>
+</html>

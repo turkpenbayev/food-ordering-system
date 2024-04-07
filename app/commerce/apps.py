@@ -9,7 +9,8 @@ class CommerceConfig(AppConfig):
         from django.db.models.signals import post_delete, post_save
 
         from commerce.handlers import (
-            clear_company_cache_on_save_delete
+            clear_company_cache_on_save_delete,
+            send_order_status_to_ws
         )
 
         from commerce.models import (
@@ -18,5 +19,6 @@ class CommerceConfig(AppConfig):
 
         post_save.connect(clear_company_cache_on_save_delete, sender=Company)
         post_delete.connect(clear_company_cache_on_save_delete, sender=Company)
+        post_save.connect(send_order_status_to_ws, sender=Order)
 
 

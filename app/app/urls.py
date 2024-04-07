@@ -20,10 +20,12 @@ from django.conf.urls.static import static
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from commerce.admin import admin_site
+from commerce.views import order_status
 
 
 urlpatterns = [
     path('admin/', admin_site.urls),
+    path('orders/<str:order_id>/', order_status),
     path('api/v1/', include('commerce.urls')),
 
 ]

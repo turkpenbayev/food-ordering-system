@@ -70,7 +70,7 @@ class OrderItemInline(admin.StackedInline):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = (OrderItemInline, )
-    list_display = ('id', 'company', 'status', 'order_type', 'address', 'final_amount', 'is_paid')
+    list_display = ('id', 'uuid', 'company', 'status', 'order_type', 'address', 'final_amount', 'is_paid')
     fields = ('user', 'status', 'order_type', 'address', 'delivery_zone', 'comment', 'payment_type', 'is_paid', 'discount', 'company',
               'total_amount', 'additional_charge', 'discount_amount', 'final_amount',)
     list_editable = ('is_paid', 'status', 'order_type', 'address')

@@ -1,0 +1,23 @@
+DEBUG=true
+SECRET_KEY=secret
+GUNICORN_WORKERS=1
+ALLOWED_HOSTS=localhost,courses,127.0.0.1,0.0.0.0,*
+
+POSTGRES_DB=commerce
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+
+REDIS_LOCATION=127.0.0.1:6379/1
+REDIS_CHANNEL_URL=127.0.0.1
+
+STATIC_ROOT=/Users/bauka/Desktop/projects/coffiteria/volumes/static
+MEDIA_ROOT=/Users/bauka/Desktop/projects/coffiteria/volumes/media
+
+CORS_WHITELIST=https://localhost,http://localhost:3000,http://127.0.0.1,http://127.0.0.1:3000
+
+SHOW_DOCS=true
+
+BOT_TOKEN = 6853100796:AAF7CcLOpcWvkCl-c1hD74QifIA5D4udK0k
+BOT_BASE_URL = http://127.0.0.1:8000

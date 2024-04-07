@@ -13,10 +13,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     env_file:
-      - ./env/app
+      - ./env/app_docker
     volumes:
       - ./app/:/code
       - ./volumes/static:/static
@@ -25,21 +25,21 @@ services:
       - redis
       - db
 
-  nginx:
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    volumes:
-      - ./volumes/static:/static
-      - ./volumes/media:/media
-      - ./volumes/certbot/conf:/etc/letsencrypt
-      - ./volumes/certbot/www:/var/www/certbot
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - app
+  # nginx:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/nginx/Dockerfile
+  #   command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  #   volumes:
+  #     - ./volumes/static:/static
+  #     - ./volumes/media:/media
+  #     - ./volumes/certbot/conf:/etc/letsencrypt
+  #     - ./volumes/certbot/www:/var/www/certbot
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   depends_on:
+  #     - app
 
   db:
     image: postgres:14.3
@@ -52,32 +52,32 @@ services:
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
 
-  certbot:
-    image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    volumes:
-      - ./volumes/certbot/conf:/etc/letsencrypt
-      - ./volumes/certbot/www:/var/www/certbot
+  # certbot:
+  #   image: certbot/certbot
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  #   volumes:
+  #     - ./volumes/certbot/conf:/etc/letsencrypt
+  #     - ./volumes/certbot/www:/var/www/certbot
       
-  db-backups:
-    image: prodrigestivill/postgres-backup-local
-    restart: always
-    volumes:
-      - ./volumes/backups:/backups
-    links:
-      - db:db
-    depends_on:
-      - db
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=commerce
-      - POSTGRES_HOST=db
-      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
-      - SCHEDULE=@daily
-      - BACKUP_KEEP_DAYS=7
-      - BACKUP_KEEP_WEEKS=4
-      - BACKUP_KEEP_MONTHS=6
-      - HEALTHCHECK_PORT=81
+  # db-backups:
+  #   image: prodrigestivill/postgres-backup-local
+  #   restart: always
+  #   volumes:
+  #     - ./volumes/backups:/backups
+  #   links:
+  #     - db:db
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - POSTGRES_USER=admin
+  #     - POSTGRES_PASSWORD=admin
+  #     - POSTGRES_DB=commerce
+  #     - POSTGRES_HOST=db
+  #     - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
+  #     - SCHEDULE=@daily
+  #     - BACKUP_KEEP_DAYS=7
+  #     - BACKUP_KEEP_WEEKS=4
+  #     - BACKUP_KEEP_MONTHS=6
+  #     - HEALTHCHECK_PORT=81
 
   
