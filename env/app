@@ -19,5 +19,5 @@ CORS_WHITELIST=https://localhost,http://localhost:3000,http://127.0.0.1,http://1
 
 SHOW_DOCS=true
 
-BOT_TOKEN = 6853100796:AAF7CcLOpcWvkCl-c1hD74QifIA5D4udK0k
+BOT_TOKEN = 
 BOT_BASE_URL = http://127.0.0.1:8000
